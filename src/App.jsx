@@ -5,46 +5,41 @@ import Dashboard from "./pages/Dashboard";
 import Menu from "./pages/Menu";
 import AddDish from "./pages/AddDish";
 import Tables from "./pages/Tables";
+import Inventory from "./pages/Inventory";
 import {
   getDishes,
   addDish,
   updateDish,
   deleteDish,
-  getDishes,
   getInventory,
 } from "./services/api";
-import Inventory from "./pages/Inventory";
 
 import "./App.css";
 
 export default function App() {
   const [dishes, setDishes] = useState([]);
+  const [inventory, setInventory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [inventory, setInventory] = useState([]);
-  // Update useEffect:
+
   useEffect(() => {
-    fetchDishes();
-    fetchInventory();
+    fetchData();
   }, []);
 
-  async function fetchInventory() {
-    try {
-      const data = await getInventory();
-      setInventory(data);
-    } catch (err) {
-      console.error("Failed to fetch inventory:", err);
-    }
-  }
-
-  async function fetchDishes() {
+  async function fetchData() {
     try {
       setLoading(true);
       setError("");
-      const data = await getDishes();
-      setDishes(data);
+
+      const [dishesData, inventoryData] = await Promise.all([
+        getDishes(),
+        getInventory(),
+      ]);
+
+      setDishes(dishesData);
+      setInventory(inventoryData);
     } catch (err) {
-      console.error("Failed to fetch dishes:", err);
+      console.error("Failed to fetch data:", err);
       setError("Could not connect to server. Check your API URL.");
     } finally {
       setLoading(false);
@@ -63,8 +58,10 @@ export default function App() {
 
   async function handleUpdate(id, data) {
     try {
-      const updated = await updateDish(id, data);
-      setDishes((prev) => prev.map((d) => (d.id === id ? updated : d)));
+      const updatedDish = await updateDish(id, data);
+      setDishes((prev) =>
+        prev.map((dish) => (dish.id === id ? updatedDish : dish)),
+      );
     } catch (err) {
       console.error("Failed to update dish:", err);
       alert("Failed to update dish. Please try again.");
@@ -74,7 +71,7 @@ export default function App() {
   async function handleDelete(id) {
     try {
       await deleteDish(id);
-      setDishes((prev) => prev.filter((d) => d.id !== id));
+      setDishes((prev) => prev.filter((dish) => dish.id !== id));
     } catch (err) {
       console.error("Failed to delete dish:", err);
       alert("Failed to delete dish. Please try again.");
@@ -84,16 +81,20 @@ export default function App() {
   async function handleToggle(id) {
     const dish = dishes.find((d) => d.id === id);
     if (!dish) return;
+
     try {
-      const updated = await updateDish(id, { available: !dish.available });
-      setDishes((prev) => prev.map((d) => (d.id === id ? updated : d)));
+      const updatedDish = await updateDish(id, {
+        ...dish,
+        available: !dish.available,
+      });
+
+      setDishes((prev) => prev.map((d) => (d.id === id ? updatedDish : d)));
     } catch (err) {
       console.error("Failed to toggle dish:", err);
       alert("Failed to update availability. Please try again.");
     }
   }
 
-  // Global loading screen
   if (loading) {
     return (
       <div className="global-loading">
@@ -103,13 +104,12 @@ export default function App() {
     );
   }
 
-  // Global error screen
   if (error) {
     return (
       <div className="global-error">
         <span>⚠️</span>
         <p>{error}</p>
-        <button className="btn btn-primary" onClick={fetchDishes}>
+        <button className="btn btn-primary" onClick={fetchData}>
           Retry
         </button>
       </div>
@@ -121,7 +121,10 @@ export default function App() {
       <Navbar />
       <main className="main-content">
         <Routes>
-          <Route path="/" element={<Dashboard dishes={dishes} />} />
+          <Route
+            path="/"
+            element={<Dashboard dishes={dishes} inventory={inventory} />}
+          />
           <Route
             path="/menu"
             element={
@@ -153,13 +156,10 @@ export default function App() {
             }
           />
           <Route path="/tables" element={<Tables />} />
-          // Update Dashboard route:
           <Route
-            path="/"
-            element={<Dashboard dishes={dishes} inventory={inventory} />}
+            path="/inventory"
+            element={<Inventory inventory={inventory} />}
           />
-          // Add Inventory route:
-          <Route path="/inventory" element={<Inventory />} />
         </Routes>
       </main>
     </BrowserRouter>
