@@ -43,3 +43,25 @@ export async function uploadImageToS3(uploadUrl, file) {
     headers: { "Content-Type": file.type },
   });
 }
+
+// ── Table Management ───────────────────────────────────────────
+
+export async function getTables() {
+  const response = await api.get("/tables");
+  return response.data;
+}
+
+export async function addTable(tableData) {
+  const response = await api.post("/tables", tableData);
+  return response.data;
+}
+
+export async function updateTableStatus(id, status) {
+  const response = await api.put(`/tables/${id}`, { status });
+  return response.data;
+}
+
+export async function removeTable(id) {
+  const response = await api.delete(`/tables/${id}`);
+  return response.data;
+}

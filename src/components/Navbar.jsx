@@ -9,13 +9,37 @@ export default function Navbar() {
         <span className="navbar-subtitle">Restaurant Manager</span>
       </div>
       <div className="navbar-links">
-        <NavLink to="/" end className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+        <NavLink
+          to="/"
+          end
+          className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"
+          }
+        >
           Dashboard
         </NavLink>
-        <NavLink to="/menu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+        <NavLink
+          to="/menu"
+          className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"
+          }
+        >
           Menu
         </NavLink>
-        <NavLink to="/add" className={({ isActive }) => isActive ? "nav-link nav-link-cta active" : "nav-link nav-link-cta"}>
+        <NavLink
+          to="/tables"
+          className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"
+          }
+        >
+          Tables
+        </NavLink>
+        <NavLink
+          to="/add"
+          className={({ isActive }) =>
+            isActive ? "nav-link nav-link-cta active" : "nav-link nav-link-cta"
+          }
+        >
           + Add Dish
         </NavLink>
       </div>

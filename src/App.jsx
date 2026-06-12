@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import Menu from "./pages/Menu";
 import AddDish from "./pages/AddDish";
+import Tables from "./pages/Tables";
 import { getDishes, addDish, updateDish, deleteDish } from "./services/api";
 import "./App.css";
 
@@ -132,6 +133,7 @@ export default function App() {
               />
             }
           />
+          <Route path="/tables" element={<Tables />} />
         </Routes>
       </main>
     </BrowserRouter>
