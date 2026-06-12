@@ -27,6 +27,14 @@ export default function Navbar() {
           Menu
         </NavLink>
         <NavLink
+          to="/inventory"
+          className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"
+          }
+        >
+          Inventory
+        </NavLink>
+        <NavLink
           to="/tables"
           className={({ isActive }) =>
             isActive ? "nav-link active" : "nav-link"

@@ -523,3 +523,90 @@ a { text-decoration: none; color: inherit; }
   padding: 16px 24px;
   border-top: 1px solid var(--border);
 }
+/* ── Inventory Grid ─────────────────────────────────────────── */
+.inv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+}
+.inv-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  display: flex; flex-direction: column; gap: 12px;
+  box-shadow: var(--shadow);
+  transition: transform .2s;
+}
+.inv-card:hover { transform: translateY(-2px); }
+.stock-ok  { border-top: 4px solid var(--green); }
+.stock-low { border-top: 4px solid var(--amber); }
+.stock-out { border-top: 4px solid var(--red);   }
+
+.inv-card-header {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; gap: 8px;
+}
+.inv-dish-name { font-size: 15px; font-weight: 700; }
+.inv-badge {
+  font-size: 11px; font-weight: 600;
+  padding: 3px 8px; border-radius: 20px; white-space: nowrap;
+}
+.inv-badge.stock-ok  { background: var(--green-light); color: var(--green); }
+.inv-badge.stock-low { background: var(--amber-light); color: var(--amber); }
+.inv-badge.stock-out { background: var(--red-light);   color: var(--red);   }
+
+/* Quantity Controls */
+.inv-quantity-row {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+}
+.qty-btn {
+  width: 34px; height: 34px;
+  border-radius: 50%; border: 2px solid var(--border);
+  background: var(--bg); font-size: 18px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all .15s; color: var(--text-1);
+}
+.qty-btn:hover:not(:disabled) { border-color: var(--brand); color: var(--brand); }
+.qty-btn:disabled { opacity: .35; cursor: not-allowed; }
+.qty-minus:hover:not(:disabled) { border-color: var(--red); color: var(--red); }
+.qty-plus:hover:not(:disabled)  { border-color: var(--green); color: var(--green); }
+
+.qty-display {
+  display: flex; flex-direction: column; align-items: center;
+}
+.qty-value { font-size: 26px; font-weight: 700; line-height: 1; }
+.qty-unit  { font-size: 11px; color: var(--text-3); }
+
+.inv-alert-row {
+  font-size: 12px; color: var(--text-3); text-align: center;
+}
+.inv-disabled-note {
+  font-size: 12px; font-weight: 600;
+  color: var(--red); text-align: center;
+  background: var(--red-light); padding: 6px; border-radius: var(--radius-sm);
+}
+.inv-actions {
+  display: flex; gap: 8px; justify-content: center;
+}
+.inv-updated {
+  font-size: 11px; color: var(--text-3); text-align: center;
+}
+
+/* ── Stock Alerts on Dashboard ──────────────────────────────── */
+.alerts-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.alerts-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.alert-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 14px; border-radius: var(--radius-sm);
+  font-size: 13.5px;
+}
+.alert-danger  { background: var(--red-light);   color: var(--red);   }
+.alert-warning { background: var(--amber-light); color: var(--amber); }
+.alert-ok      { background: var(--green-light); color: var(--green); }
+.alert-note { font-size: 12px; font-weight: 600; opacity: .8; }

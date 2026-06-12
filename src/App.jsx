@@ -5,18 +5,37 @@ import Dashboard from "./pages/Dashboard";
 import Menu from "./pages/Menu";
 import AddDish from "./pages/AddDish";
 import Tables from "./pages/Tables";
-import { getDishes, addDish, updateDish, deleteDish } from "./services/api";
+import {
+  getDishes,
+  addDish,
+  updateDish,
+  deleteDish,
+  getDishes,
+  getInventory,
+} from "./services/api";
+import Inventory from "./pages/Inventory";
+
 import "./App.css";
 
 export default function App() {
   const [dishes, setDishes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
-  // Fetch all dishes from DynamoDB on first load
+  const [inventory, setInventory] = useState([]);
+  // Update useEffect:
   useEffect(() => {
     fetchDishes();
+    fetchInventory();
   }, []);
+
+  async function fetchInventory() {
+    try {
+      const data = await getInventory();
+      setInventory(data);
+    } catch (err) {
+      console.error("Failed to fetch inventory:", err);
+    }
+  }
 
   async function fetchDishes() {
     try {
@@ -134,6 +153,13 @@ export default function App() {
             }
           />
           <Route path="/tables" element={<Tables />} />
+          // Update Dashboard route:
+          <Route
+            path="/"
+            element={<Dashboard dishes={dishes} inventory={inventory} />}
+          />
+          // Add Inventory route:
+          <Route path="/inventory" element={<Inventory />} />
         </Routes>
       </main>
     </BrowserRouter>

@@ -65,3 +65,24 @@ export async function removeTable(id) {
   const response = await api.delete(`/tables/${id}`);
   return response.data;
 }
+// ── Inventory ──────────────────────────────────────────────────
+
+export async function getInventory() {
+  const response = await api.get("/inventory");
+  return response.data;
+}
+
+export async function addInventoryItem(data) {
+  const response = await api.post("/inventory", data);
+  return response.data;
+}
+
+export async function updateInventoryItem(id, data) {
+  const response = await api.put(`/inventory/${id}`, data);
+  return response.data;
+}
+
+export async function removeInventoryItem(id) {
+  const response = await api.delete(`/inventory/${id}`);
+  return response.data;
+}
